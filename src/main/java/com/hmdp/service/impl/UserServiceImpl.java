@@ -85,11 +85,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (RegexUtils.isPhoneInvalid(loginForm.getPhone())) {
             return Result.fail("手机号错误");
         }
-        // 验证码是否存在
-       /* String code = String.valueOf(session.getAttribute("code"));
-        if (code == loginCodeKey) {
-            throw new NullPointerException("session 中 code 为空");
-        }*/
+
         // 验证码是否正确
         if (!loginCodeKey.equals(loginForm.getCode())) {
             return Result.fail("验证码错误");
@@ -104,7 +100,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         // 用户存在
         UserDTO userDTO = BeanUtil.copyProperties(user, UserDTO.class);
-//        session.setAttribute(UserConstant.USER, userDTO);
+
         String token = UUID.randomUUID().toString(true);
         Map<String, Object> userDTOMap = BeanUtil.beanToMap(userDTO);
         String userId = userDTO.getId().toString();
