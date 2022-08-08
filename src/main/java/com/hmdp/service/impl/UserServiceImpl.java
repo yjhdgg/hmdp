@@ -62,7 +62,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         // 4.保存验证码到session
 //        session.setAttribute(UserConstant.CODE, code);
         // 4.保存到Redis
-        stringRedisTemplate.opsForValue().set(RedisConstant.LOGIN_CODE_KEY + phone, code,RedisConstant.LOGIN_CODE_TTL, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().set(RedisConstant.LOGIN_CODE_KEY + phone, code, RedisConstant.LOGIN_CODE_TTL, TimeUnit.MINUTES);
         // 5.发送验证码
         log.info("发送短信验证码成功");
         return Result.ok(code);
@@ -104,10 +104,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         String token = UUID.randomUUID().toString(true);
         Map<String, Object> userDTOMap = BeanUtil.beanToMap(userDTO);
         String userId = userDTO.getId().toString();
-        userDTOMap.put("id",userId);
+        userDTOMap.put("id", userId);
         HashOperations<String, Object, Object> hashOperations = stringRedisTemplate.opsForHash();
-        hashOperations.putAll(RedisConstant.LOGIN_USER_KEY+ token,userDTOMap);
-        stringRedisTemplate.expire(token,RedisConstant.LOGIN_USER_TTL,TimeUnit.MINUTES);
+        hashOperations.putAll(RedisConstant.LOGIN_USER_KEY + token, userDTOMap);
+        stringRedisTemplate.expire(token, RedisConstant.LOGIN_USER_TTL, TimeUnit.MINUTES);
         return Result.ok(token);
     }
 
